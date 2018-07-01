@@ -13,7 +13,8 @@ info3rdmodules = $(3rdmodules:%=info-%)
 build-cJSON:
 	mkdir -p $(intermediatedir)/3rd/cJSON
 	cd $(intermediatedir)/3rd/cJSON; cmake $(rootdir)/source/3rd/cJSON		\
-		-DCMAKE_INSTALL_PREFIX=$(outputdir)
+		-DCMAKE_INSTALL_PREFIX=$(outputdir) -DCMAKE_C_FLAGS="-fPIC"			\
+		-DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_LIBS=ON
 	cd $(intermediatedir)/3rd/cJSON; make; make install
 
 $(sync3rdmodules):
