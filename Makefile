@@ -1,9 +1,14 @@
+rootdir = $(shell pwd)/../..
+project ?= ubuntu-base
+
+include $(rootdir)/build/project/$(project).mk
+include $(rootdir)/build/common/common.mk
 
 3rdmodules += cJSON
-build3rdmodules = $(3rdmodules: %=build-%)
-sync3rdmodules = $(3rdmodules: %=sync-%)
-clean3rdmodules = $(3rdmodules: %=clean-%)
-info3rdmodules = $(3rdmodules: %=info-%)
+build3rdmodules = $(3rdmodules:%=build-%)
+sync3rdmodules = $(3rdmodules:%=sync-%)
+clean3rdmodules = $(3rdmodules:%=clean-%)
+info3rdmodules = $(3rdmodules:%=info-%)
 
 $(build3rdmodules):
 
