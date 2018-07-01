@@ -1,4 +1,4 @@
-rootdir = $(shell pwd)/../..
+rootdir := $(shell pwd)/../..
 project ?= ubuntu-base
 
 include $(rootdir)/build/project/$(project).mk
