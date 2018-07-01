@@ -24,14 +24,14 @@ $(sync3rdmodules):
 	fi
 
 $(clean3rdmodules):
-	@if test -d $(intermediatedir)/3rd/$(@:sync-%=%); then					\
-		cd $(intermediatedir)/3rd/$(@:sync-%=%); make clean;				\
-		rm -rf $(intermediatedir)/3rd/$(@:sync-%=%);						\
+	if test -d $(intermediatedir)/3rd/$(@:clean-%=%); then					\
+		cd $(intermediatedir)/3rd/$(@:clean-%=%); make clean;				\
+		rm -rf $(intermediatedir)/3rd/$(@:clean-%=%);						\
 	fi
 
 $(info3rdmodules):
-	@if test -d $(sourcedir)/3rd/$(@:sync-%=%); then						\
-		cd $(sourcedir)/3rd/$(@:sync-%=%); git status;						\
+	@if test -d $(sourcedir)/3rd/$(@:info-%=%); then						\
+		cd $(sourcedir)/3rd/$(@:info-%=%); git status;						\
 	fi
 
 all: $(build3rdmodules)
