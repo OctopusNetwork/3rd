@@ -10,7 +10,11 @@ sync3rdmodules = $(3rdmodules:%=sync-%)
 clean3rdmodules = $(3rdmodules:%=clean-%)
 info3rdmodules = $(3rdmodules:%=info-%)
 
-$(build3rdmodules):
+build-cJSON:
+	mkdir -p $(intermediatedir)/3rd/cJSON
+	cd $(intermediatedir)/3rd/cJSON; cmake $(rootdir)/source/3rd/cJSON		\
+		-DCMAKE_INSTALL_PREFIX=$(outputdir)
+	cd $(intermediatedir)/3rd/cJSON; make; make install
 
 $(sync3rdmodules):
 	@if ! test -d $(sourcedir)/3rd/$(@:sync-%=%); then						\
@@ -20,8 +24,9 @@ $(sync3rdmodules):
 	fi
 
 $(clean3rdmodules):
-	@if test -d $(sourcedir)/3rd/$(@:sync-%=%); then						\
-		cd $(sourcedir)/3rd/$(@:sync-%=%); make clean;						\
+	@if test -d $(intermediatedir)/3rd/$(@:sync-%=%); then					\
+		cd $(intermediatedir)/3rd/$(@:sync-%=%); make clean;				\
+		rm -rf $(intermediatedir)/3rd/$(@:sync-%=%);						\
 	fi
 
 $(info3rdmodules):
