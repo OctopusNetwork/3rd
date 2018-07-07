@@ -39,3 +39,4 @@ all: $(build3rdmodules)
 sync: $(sync3rdmodules)
 clean: $(clean3rdmodules)
 info: $(info3rdmodules)
+install:
