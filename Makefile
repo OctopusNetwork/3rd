@@ -4,7 +4,7 @@ project ?= ubuntu-base
 include $(rootdir)/build/project/$(project).mk
 include $(rootdir)/build/common/common.mk
 
-3rdmodules = cJSON
+3rdmodules = cJSON gperftools googletest
 build3rdmodules = $(3rdmodules:%=build-%)
 sync3rdmodules = $(3rdmodules:%=sync-%)
 clean3rdmodules = $(3rdmodules:%=clean-%)
@@ -16,6 +16,28 @@ build-cJSON:
 		-DCMAKE_INSTALL_PREFIX=$(outputdir) -DCMAKE_C_FLAGS="-fPIC"			\
 		-DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_LIBS=ON
 	cd $(intermediatedir)/3rd/cJSON; make; make install
+
+build-gperftools:
+	mkdir -p $(intermediatedir)/3rd/gperftools
+	cd $(rootdir)/source/3rd/gperftools; ./autogen.sh
+	cd $(intermediatedir)/3rd/gperftools; $(rootdir)/source/3rd/gperftools/configure	\
+												--prefix=$(outputdir)					\
+												--disable-static						\
+												--enable-shared							\
+												--host=$(crosshost)
+	cd $(intermediatedir)/3rd/gperftools; make; make install
+
+build-googletest:
+	mkdir -p $(intermediatedir)/3rd/googletest
+	cd $(rootdir)/source/3rd/googletest/googletest;						\
+		$(HOSTCXX) -isystem												\
+		$(rootdir)/source/3rd/googletest/googletest/include				\
+		-I$(rootdir)/source/3rd/googletest/googletest					\
+		-pthread														\
+		-c $(rootdir)/source/3rd/googletest/googletest/src/gtest-all.cc	\
+		-o $(intermediatedir)/3rd/googletest/gtest-all.o
+		cd $(intermediatedir)/3rd/googletest;							\
+			$(HOSTAR) -rv $(libdir)/libgtest.a gtest-all.o
 
 $(sync3rdmodules):
 	@if ! test -d $(sourcedir)/3rd/$(@:sync-%=%); then						\
