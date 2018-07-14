@@ -29,15 +29,10 @@ build-gperftools:
 
 build-googletest:
 	mkdir -p $(intermediatedir)/3rd/googletest
-	cd $(rootdir)/source/3rd/googletest/googletest;						\
-		$(HOSTCXX) -isystem												\
-		$(rootdir)/source/3rd/googletest/googletest/include				\
-		-I$(rootdir)/source/3rd/googletest/googletest					\
-		-pthread														\
-		-c $(rootdir)/source/3rd/googletest/googletest/src/gtest-all.cc	\
-		-o $(intermediatedir)/3rd/googletest/gtest-all.o
-		cd $(intermediatedir)/3rd/googletest;							\
-			$(HOSTAR) -rv $(libdir)/libgtest.a gtest-all.o
+	cd $(rootdir)/source/3rd/googletest/googletest;										\
+		cmake $(rootdir)/source/3rd/googletest -DCMAKE_INSTALL_PREFIX=$(outputdir)		\
+		-DCMAKE_C_FLAGS="-fPIC" -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_LIBS=ON
+	cd $(rootdir)/source/3rd/googletest/googletest; make; make install
 
 $(sync3rdmodules):
 	@if ! test -d $(sourcedir)/3rd/$(@:sync-%=%); then						\
