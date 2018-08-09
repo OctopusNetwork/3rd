@@ -5,7 +5,6 @@ include $(rootdir)/build/project/$(project).mk
 include $(rootdir)/build/common/common.mk
 
 3rdmodules = cJSON gperftools googletest http-parser
-3rdmodules = http-parser
 build3rdmodules = $(3rdmodules:%=build-%)
 sync3rdmodules = $(3rdmodules:%=sync-%)
 clean3rdmodules = $(3rdmodules:%=clean-%)
