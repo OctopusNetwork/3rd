@@ -4,7 +4,8 @@ project ?= ubuntu-base
 include $(rootdir)/build/project/$(project).mk
 include $(rootdir)/build/common/common.mk
 
-3rdmodules = cJSON gperftools googletest
+3rdmodules = cJSON gperftools googletest http-parser
+3rdmodules = http-parser
 build3rdmodules = $(3rdmodules:%=build-%)
 sync3rdmodules = $(3rdmodules:%=sync-%)
 clean3rdmodules = $(3rdmodules:%=clean-%)
@@ -33,6 +34,10 @@ build-googletest:
 		cmake $(rootdir)/source/3rd/googletest -DCMAKE_INSTALL_PREFIX=$(outputdir)		\
 		-DCMAKE_C_FLAGS="-fPIC" -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_LIBS=ON
 	cd $(rootdir)/source/3rd/googletest/googletest; make; make install
+
+build-http-parser:
+	mkdir -p $(intermediatedir)/3rd/http-parser
+	@cd $(sourcedir)/3rd/http-parser; make PREFIX=$(outputdir) package
 
 $(sync3rdmodules):
 	@if ! test -d $(sourcedir)/3rd/$(@:sync-%=%); then						\

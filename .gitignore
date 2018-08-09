@@ -1,3 +1,4 @@
 cJSON
 gperftools
 googletest
+http-parser
